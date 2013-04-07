@@ -1,0 +1,6 @@
+Revision history for Perl extension Anansi::Class.
+
+0.01  Sat Apr  6 19:54:31 2013
+	- original version; created by h2xs 1.23 with options
+		-AX Anansi::Class
+
