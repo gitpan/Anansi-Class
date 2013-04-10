@@ -28,7 +28,7 @@ can only occur when an object is no longer used.
 =cut
 
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 use Anansi::ObjectManager;
 
@@ -232,7 +232,7 @@ sub uses {
 
 =head1 AUTHOR
 
-Kevin Treleaven <kevin@treleaven.net>
+Kevin Treleaven <kevin AT treleaven DOT net>
 
 =cut
 
