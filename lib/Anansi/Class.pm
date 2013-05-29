@@ -19,16 +19,19 @@ Anansi::Class - A base module definition
   my ($self, %parameters) = @_;
  }
 
+ 1;
+
 =head1 DESCRIPTION
 
 This is a base module definition that manages the creation and destruction of
 module object instances including embedded objects and ensures that destruction
-can only occur when an object is no longer used.
+can only occur when an object is no longer used.  Makes use of
+L<Anansi::ObjectManager>.
 
 =cut
 
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 use Anansi::ObjectManager;
 
@@ -39,6 +42,17 @@ use Anansi::ObjectManager;
 
 
 =head2 DESTROY
+
+=head3 PARAMETERS
+
+=over 4
+
+=item self
+
+(I<BLESSED HASH>, I<REQUIRED>)
+An object of this namespace.
+
+=back
 
 Performs module object instance clean-up actions.  Indirectly called by the perl
 interpreter.
@@ -60,6 +74,17 @@ sub DESTROY {
 
 
 =head2 finalise
+
+=head3 PARAMETERS
+
+=over 4
+
+=item self
+
+(I<BLESSED HASH>, I<REQUIRED>)
+An object of this namespace.
+
+=back
 
 Called just prior to module instance object destruction.  Intended to be
 replaced by an extending module.  Indirectly called.
@@ -85,8 +110,29 @@ sub finalise {
      return if($@);
  }
 
-Performs module instance object variable imports.  Intended to be replaced by an
-extending module.  Indirectly called.
+=head3 PARAMETERS
+
+=over 4
+
+=item self
+
+(I<BLESSED HASH>, I<REQUIRED>)
+An object of this namespace.
+
+=item caller
+
+(I<ARRAY>, I<REQUIRED>)
+An ARRAY containing the I<package>, I<file name> and I<line number> of the caller.
+
+=item parameter
+
+(I<STRING>, I<REQUIRED>)
+A STRING containing the name to import.
+
+=back
+
+Performs one module instance name import.  Called for each name to import.
+Intended to be replaced by an extending module.  Indirectly called.
 
 =cut
 
@@ -104,7 +150,23 @@ sub implicate {
 
  use Anansi::Example qw(EXAMPLE_VARIABLE);
 
-Performs all required base module imports.  Indirectly called via an extending
+=head3 PARAMETERS
+
+=over 4
+
+=item self
+
+(I<BLESSED HASH>, I<REQUIRED>)
+An object of this namespace.
+
+=item parameters
+
+(I<ARRAY>, I<OPTIONAL>)
+An ARRAY containing all of the names to import.
+
+=back
+
+Performs all required module name imports.  Indirectly called via an extending
 module.
 
 =cut
@@ -122,6 +184,22 @@ sub import {
 
 =head2 initialise
 
+=head3 PARAMETERS
+
+=over 4
+
+=item self
+
+(I<BLESSED HASH>, I<REQUIRED>)
+An object of this namespace.
+
+=item parameters
+
+(I<HASH>)
+Named parameters that were supplied to the I<new> method.
+
+=back
+
 Called just after module instance object creation.  Intended to be replaced by
 an extending module.  Indirectly called.
 
@@ -136,12 +214,34 @@ sub initialise {
 =head2 new
 
  my $object = Anansi::Example->new();
+
  my $object = Anansi::Example->new(
   SETTING => 'example',
  );
 
+=head3 PARAMETERS
+
+=over 4
+
+=item class
+
+(I<REQUIRED>)
+
+(I<BLESSED HASH>)
+An object of this namespace.
+
+(I<STRING>)
+A STRING of the namespace.
+
+=item parameters
+
+(I<HASH>, I<OPTIONAL>)
+Named parameters.
+
+=back
+
 Instantiates an object instance of a module.  Indirectly called via an extending
-module.
+module through inheritance.
 
 =cut
 
@@ -166,6 +266,22 @@ sub new {
 
  $object->old();
 
+=head3 PARAMETERS
+
+=over 4
+
+=item self
+
+(I<BLESSED HASH>, I<REQUIRED>)
+An object of this namespace.
+
+=item parameters
+
+(I<HASH>, I<OPTIONAL>)
+Named parameters.
+
+=back
+
 Enables a module instance object to be externally destroyed.
 
 =cut
@@ -180,6 +296,23 @@ sub old {
 =head2 used
 
  $object->used('EXAMPLE');
+
+=head3 PARAMETERS
+
+=over 4
+
+=item self
+
+(I<BLESSED HASH>, I<REQUIRED>)
+An object of this namespace.
+
+=item parameters
+
+(I<ARRAY>, I<OPTIONAL>)
+An ARRAY of STRINGs containing the names of blessed objects currently in use by
+this object.
+
+=back
 
 Releases a module instance object to enable it to be destroyed.
 
@@ -206,12 +339,30 @@ sub used {
  $object->uses(
   EXAMPLE => $example,
  );
+
  $object->uses(
   EXAMPLE => 'Anansi::Example',
  );
 
-Binds a module instance object to the current object to ensure that the object
-is not prematurely destroyed.
+=head3 PARAMETERS
+
+=over 4
+
+=item self
+
+(I<BLESSED HASH>, I<REQUIRED>)
+An object of this namespace.
+
+=item parameters
+
+(I<HASH>, I<OPTIONAL>)
+A HASH containing KEYs that represent the name to associate with the STRING
+namespace or OBJECT within the associated VALUEs.
+
+=back
+
+Binds module instance objects to the current object to ensure that the objects
+are not prematurely destroyed.
 
 =cut
 

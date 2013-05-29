@@ -8,4 +8,5 @@ Revision history for Perl extension Anansi::Class.
 	- munged email address.
 0.03  Wed Apr 10 13:14:30 2013
 	- amended makefile to fix dependency issue.
-
+0.04  Mon May 20 10:59:02 2013
+	- modified the POD to reflect more concise examples and include method parameter.
