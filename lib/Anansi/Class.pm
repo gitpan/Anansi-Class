@@ -31,7 +31,7 @@ L<Anansi::ObjectManager>.
 =cut
 
 
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 use Anansi::ObjectManager;
 
@@ -49,7 +49,8 @@ use Anansi::ObjectManager;
 
 =item self
 
-(I<BLESSED HASH>, I<REQUIRED>)
+( I<Blessed Hash>, I<Required> )
+
 An object of this namespace.
 
 =back
@@ -81,7 +82,8 @@ sub DESTROY {
 
 =item self
 
-(I<BLESSED HASH>, I<REQUIRED>)
+( I<Blessed Hash>, I<Required> )
+
 An object of this namespace.
 
 =back
@@ -116,18 +118,21 @@ sub finalise {
 
 =item self
 
-(I<BLESSED HASH>, I<REQUIRED>)
+( I<Blessed Hash>, I<Required> )
+
 An object of this namespace.
 
 =item caller
 
-(I<ARRAY>, I<REQUIRED>)
-An ARRAY containing the I<package>, I<file name> and I<line number> of the caller.
+( I<Array>, I<Required> )
+
+An array containing the I<package>, I<file name> and I<line number> of the caller.
 
 =item parameter
 
-(I<STRING>, I<REQUIRED>)
-A STRING containing the name to import.
+( I<String>, I<Required> )
+
+A string containing the name to import.
 
 =back
 
@@ -156,13 +161,15 @@ sub implicate {
 
 =item self
 
-(I<BLESSED HASH>, I<REQUIRED>)
+( I<Blessed Hash>, I<Required> )
+
 An object of this namespace.
 
 =item parameters
 
-(I<ARRAY>, I<OPTIONAL>)
-An ARRAY containing all of the names to import.
+( I<Array>, I<Optional> )
+
+An array containing all of the names to import.
 
 =back
 
@@ -190,12 +197,14 @@ sub import {
 
 =item self
 
-(I<BLESSED HASH>, I<REQUIRED>)
+( I<Blessed Hash>, I<Required> )
+
 An object of this namespace.
 
 =item parameters
 
-(I<HASH>)
+( I<Hash> )
+
 Named parameters that were supplied to the I<new> method.
 
 =back
@@ -225,17 +234,20 @@ sub initialise {
 
 =item class
 
-(I<REQUIRED>)
+( I<Required> )
 
-(I<BLESSED HASH>)
+( I<Blessed Hash> )
+
 An object of this namespace.
 
-(I<STRING>)
-A STRING of the namespace.
+( I<String> )
+
+A string of the namespace.
 
 =item parameters
 
-(I<HASH>, I<OPTIONAL>)
+( I<Hash>, I<Optional> )
+
 Named parameters.
 
 =back
@@ -272,12 +284,14 @@ sub new {
 
 =item self
 
-(I<BLESSED HASH>, I<REQUIRED>)
+( I<Blessed Hash>, I<Required> )
+
 An object of this namespace.
 
 =item parameters
 
-(I<HASH>, I<OPTIONAL>)
+( I<Hash>, I<Optional> )
+
 Named parameters.
 
 =back
@@ -303,13 +317,15 @@ sub old {
 
 =item self
 
-(I<BLESSED HASH>, I<REQUIRED>)
+( I<Blessed Hash>, I<Required> )
+
 An object of this namespace.
 
 =item parameters
 
-(I<ARRAY>, I<OPTIONAL>)
-An ARRAY of STRINGs containing the names of blessed objects currently in use by
+( I<Array>, I<Optional> )
+
+An array of strings containing the names of blessed objects currently in use by
 this object.
 
 =back
@@ -350,14 +366,16 @@ sub used {
 
 =item self
 
-(I<BLESSED HASH>, I<REQUIRED>)
+( I<Blessed Hash>, I<Required> )
+
 An object of this namespace.
 
 =item parameters
 
-(I<HASH>, I<OPTIONAL>)
-A HASH containing KEYs that represent the name to associate with the STRING
-namespace or OBJECT within the associated VALUEs.
+( I<Hash>, I<Optional> )
+
+A hash containing keys that represent the name to associate with the string
+namespace or object within the associated values.
 
 =back
 
