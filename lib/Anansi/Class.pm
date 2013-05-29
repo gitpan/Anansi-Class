@@ -31,7 +31,7 @@ L<Anansi::ObjectManager>.
 =cut
 
 
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 use Anansi::ObjectManager;
 
@@ -42,8 +42,6 @@ use Anansi::ObjectManager;
 
 
 =head2 DESTROY
-
-=head3 PARAMETERS
 
 =over 4
 
@@ -75,8 +73,6 @@ sub DESTROY {
 
 
 =head2 finalise
-
-=head3 PARAMETERS
 
 =over 4
 
@@ -111,8 +107,6 @@ sub finalise {
      }
      return if($@);
  }
-
-=head3 PARAMETERS
 
 =over 4
 
@@ -155,8 +149,6 @@ sub implicate {
 
  use Anansi::Example qw(EXAMPLE_VARIABLE);
 
-=head3 PARAMETERS
-
 =over 4
 
 =item self
@@ -190,8 +182,6 @@ sub import {
 
 
 =head2 initialise
-
-=head3 PARAMETERS
 
 =over 4
 
@@ -227,8 +217,6 @@ sub initialise {
  my $object = Anansi::Example->new(
   SETTING => 'example',
  );
-
-=head3 PARAMETERS
 
 =over 4
 
@@ -278,8 +266,6 @@ sub new {
 
  $object->old();
 
-=head3 PARAMETERS
-
 =over 4
 
 =item self
@@ -310,8 +296,6 @@ sub old {
 =head2 used
 
  $object->used('EXAMPLE');
-
-=head3 PARAMETERS
 
 =over 4
 
@@ -359,8 +343,6 @@ sub used {
  $object->uses(
   EXAMPLE => 'Anansi::Example',
  );
-
-=head3 PARAMETERS
 
 =over 4
 

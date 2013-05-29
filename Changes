@@ -12,3 +12,5 @@ Revision history for Perl extension Anansi::Class.
 	- modified the POD to reflect more concise examples and include method parameter.
 0.05  Wed May 28 20:40:05 2013
 	- modified the POD.
+0.06  Wed May 28 22:34:55 2013
+	- modified the POD.
