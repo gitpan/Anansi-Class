@@ -7,19 +7,19 @@ Anansi::Class - A base module definition
 
 =head1 SYNOPSIS
 
- package Anansi::Example;
+    package Anansi::Example;
 
- use base qw(Anansi::Class);
+    use base qw(Anansi::Class);
 
- sub finalise {
-  my ($self, %parameters) = @_;
- }
+    sub finalise {
+        my ($self, %parameters) = @_;
+    }
 
- sub initialise {
-  my ($self, %parameters) = @_;
- }
+    sub initialise {
+        my ($self, %parameters) = @_;
+    }
 
- 1;
+    1;
 
 =head1 DESCRIPTION
 
@@ -31,7 +31,7 @@ L<Anansi::ObjectManager>.
 =cut
 
 
-our $VERSION = '0.07';
+our $VERSION = '0.08';
 
 use Anansi::ObjectManager;
 
@@ -72,6 +72,10 @@ sub DESTROY {
 
 =head2 finalise
 
+    $OBJECT->finalise();
+
+    $OBJECT->SUPER::finalise();
+
 =over 4
 
 =item self I<(Blessed Hash, Required)>
@@ -80,8 +84,8 @@ An object of this namespace.
 
 =back
 
-Called just prior to module instance object destruction.  Intended to be
-replaced by an extending module.  Indirectly called.
+Declared as a virtual method.  Called just prior to module instance object
+destruction.  Intended to be replaced by an extending module.
 
 =cut
 
@@ -93,16 +97,16 @@ sub finalise {
 
 =head2 implicate
 
- sub implicate {
-     my ($self, $caller, $parameter) = @_;
-     if('EXAMPLE_VARIABLE' eq $parameter) {
-         return \EXAMPLE_VARIABLE;
-     }
-     try {
-         return $self->SUPER::implicate($caller, $parameter);
-     }
-     return if($@);
- }
+    sub implicate {
+        my ($self, $caller, $parameter) = @_;
+        if('EXAMPLE_VARIABLE' eq $parameter) {
+            return \EXAMPLE_VARIABLE;
+        }
+        try {
+            return $self->SUPER::implicate($caller, $parameter);
+        }
+        return if($@);
+    }
 
 =over 4
 
@@ -120,8 +124,8 @@ A string containing the name to import.
 
 =back
 
-Performs one module instance name import.  Called for each name to import.
-Intended to be replaced by an extending module.  Indirectly called.
+Declared as a virtual method.  Performs one module instance name import.  Called
+for each name to import.
 
 =cut
 
@@ -137,7 +141,7 @@ sub implicate {
 
 =head2 import
 
- use Anansi::Example qw(EXAMPLE_VARIABLE);
+    use Anansi::Example qw(EXAMPLE_VARIABLE);
 
 =over 4
 
@@ -169,20 +173,24 @@ sub import {
 
 =head2 initialise
 
+    $OBJECT->initialise();
+
+    $OBJECT->SUPER::initialise();
+
 =over 4
 
 =item self I<(Blessed Hash, Required)>
 
 An object of this namespace.
 
-=item parameters I<(Hash)>
+=item parameters I<(Hash, Optional)>
 
 Named parameters that were supplied to the I<new> method.
 
 =back
 
-Called just after module instance object creation.  Intended to be replaced by
-an extending module.  Indirectly called.
+Declared as a virtual method.  Called just after module instance object
+creation.
 
 =cut
 
@@ -194,11 +202,11 @@ sub initialise {
 
 =head2 new
 
- my $object = Anansi::Example->new();
+    my $object = Anansi::Example->new();
 
- my $object = Anansi::Example->new(
-  SETTING => 'example',
- );
+    my $object = Anansi::Example->new(
+       SETTING => 'example',
+    );
 
 =over 4
 
@@ -236,7 +244,7 @@ sub new {
 
 =head2 old
 
- $object->old();
+    $object->old();
 
 =over 4
 
@@ -263,7 +271,7 @@ sub old {
 
 =head2 used
 
- $object->used('EXAMPLE');
+    $object->used('EXAMPLE');
 
 =over 4
 
@@ -300,13 +308,13 @@ sub used {
 
 =head2 uses
 
- $object->uses(
-  EXAMPLE => $example,
- );
+    $object->uses(
+        EXAMPLE => $example,
+    );
 
- $object->uses(
-  EXAMPLE => 'Anansi::Example',
- );
+    $object->uses(
+        EXAMPLE => 'Anansi::Example',
+    );
 
 =over 4
 
@@ -347,6 +355,8 @@ This module is designed to make it simple, easy and quite fast to code your
 design in perl.  If for any reason you feel that it doesn't achieve these goals
 then please let me know.  I am here to help.  All constructive criticisms are
 also welcomed.
+
+=cut
 
 
 =head1 AUTHOR
