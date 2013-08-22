@@ -21,6 +21,14 @@ Anansi::Class - A base module definition
 
     1;
 
+    package main;
+
+    use Anansi::Example;
+
+    my $object = Anansi::Example->new();
+
+    1;
+
 =head1 DESCRIPTION
 
 This is a base module definition that manages the creation and destruction of
@@ -31,7 +39,7 @@ L<Anansi::ObjectManager>.
 =cut
 
 
-our $VERSION = '0.08';
+our $VERSION = '0.09';
 
 use Anansi::ObjectManager;
 
@@ -51,8 +59,9 @@ An object of this namespace.
 
 =back
 
-Performs module object instance clean-up actions.  Indirectly called by the perl
-interpreter.
+Performs module object instance clean-up actions.  Calls the
+L<finalise|Anansi::Class/"finalise"> method prior to dereferencing the object.
+Indirectly called by the perl interpreter.
 
 =cut
 
@@ -84,8 +93,7 @@ An object of this namespace.
 
 =back
 
-Declared as a virtual method.  Called just prior to module instance object
-destruction.  Intended to be replaced by an extending module.
+A virtual method.  Called just prior to module instance object destruction.
 
 =cut
 
@@ -124,8 +132,8 @@ A string containing the name to import.
 
 =back
 
-Declared as a virtual method.  Performs one module instance name import.  Called
-for each name to import.
+A virtual method.  Performs one module instance name import.  Called for each
+name to import.
 
 =cut
 
@@ -189,8 +197,7 @@ Named parameters that were supplied to the I<new> method.
 
 =back
 
-Declared as a virtual method.  Called just after module instance object
-creation.
+A virtual method.  Called just after module instance object creation.
 
 =cut
 
@@ -220,8 +227,10 @@ Named parameters.
 
 =back
 
-Instantiates an object instance of a module.  Indirectly called via an extending
-module through inheritance.
+Instantiates an object instance of a module.  Calls the
+L<initialise|Anansi::Class/"initialise"> module with the supplied I<parameters>
+after the object is instantiated.  Indirectly called via an extending module
+through inheritance.
 
 =cut
 
@@ -315,6 +324,7 @@ sub used {
     $object->uses(
         EXAMPLE => 'Anansi::Example',
     );
+    $object->{EXAMPLE}->doSomething();
 
 =over 4
 
@@ -330,7 +340,7 @@ namespace or object within the associated values.
 =back
 
 Binds module instance objects to the current object to ensure that the objects
-are not prematurely destroyed.
+are not prematurely destroyed.  Adds the I<parameters> to the object namespace.
 
 =cut
 
@@ -346,6 +356,84 @@ sub uses {
         next if(!defined($value->{IDENTIFICATION}));
         $self->{$key} = $value if(!defined($self->{KEY}));
     }
+}
+
+
+=head2 using
+
+    my $names = $object->using();
+    foreach my $name (@{$names}) {
+        $object->{$name}->doSomething();
+    }
+
+    $object->using('EXAMPLE')->doSomething();
+
+    if(1 == $object->using(
+        'EXAMPLE',
+        'ANOTHER',
+    ));
+
+=over 4
+
+=item self I<(Blessed Hash, Required)>
+
+An object of this namespace.
+
+=item parameters I<(Array B<or> String, Optional)>
+
+A string or an array of strings containing the names of blessed objects
+currently in use by this object.
+
+=back
+
+Either returns an array of strings containing the names of the blessed objects
+currently in use by this object or the blessed object represented by the single
+specified name or whether the specified names represent blessed objects with a
+B<1> I<(one)> for yes and B<0> I<(zero)> for no.
+
+=cut
+
+
+sub using {
+    my ($self, @parameters) = @_;
+    if(0 == scalar(@parameters)) {
+    } elsif(1 == scalar(@parameters)) {
+        return if(ref($parameters[0]) !~ /^$/);
+        return if($parameters[0] =~ /^\s*$/);
+    } else {
+        foreach my $parameter (@parameters) {
+            return 0 if(ref($parameter) !~ /^$/);
+            return 0 if($parameter =~ /^\s*$/);
+        }
+    }
+    my $objectManager = Anansi::ObjectManager->new();
+    my $uses = $objectManager->user($self);
+    if(defined($uses)) {
+    } elsif(0 == scalar(@parameters)) {
+        return;
+    } elsif(1 == scalar(@parameters)) {
+        return 0;
+    } else {
+        return [];
+    }
+    my %identifiers = map { $objectManager->identification($_) => 1 } (@{$uses});
+    my %names;
+    foreach my $name (keys(%{$self})) {
+        next if(ref($self->{$name}) =~ /^(|ARRAY|CODE|FORMAT|GLOB|HASH|IO|LVALUE|REF|Regexp|SCALAR|VSTRING)$/i);
+        next if(!defined(${$self->{$name}}{IDENTIFICATION}));
+        next if(!defined($identifiers{${$self->{$name}}{IDENTIFICATION}}));
+        $names{$name} = ${$self->{$name}}{IDENTIFICATION};
+    }
+    if(0 == scalar(@parameters)) {
+        return [(keys(%names))];
+    } elsif(1 == scalar(@parameters)) {
+        return if(!defined($names{$parameters[0]}));
+        return $self->{$parameters[0]};
+    }
+    foreach my $parameter (@parameters) {
+        return 0 if(!defined($names{$parameter}));
+    }
+    return 1;
 }
 
 

@@ -18,3 +18,6 @@ Revision history for Perl extension Anansi::Class.
 	- modifield the POD.
 0.08  Wed May 29 11:52:45 2013
 	- modified the POD.
+0.09  Thu Aug 08 12:53:09 2013
+	- added "using" subroutine.
+	- modified the POD.
